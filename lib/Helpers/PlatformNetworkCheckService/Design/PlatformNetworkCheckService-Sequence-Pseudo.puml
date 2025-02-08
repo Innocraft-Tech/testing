@@ -1,0 +1,72 @@
+@startuml PlatformNetworkCheckService-Sequence-Pseudo-Diagram
+
+
+!define POSITIVERESPONSE 90EE90
+!define NEGATIVEERESPONSE EFBBBB
+!define NUETRALRESPONSE F2DC79
+
+skinparam sequence{
+    ParticipantBackgroundColor #A7BEAE
+    LifeLineBackgroundColor #E7E8D1
+    LifeLineBorderColor #2C5F2D
+    ActorBackgroundColor #FC766AFF
+    ActorBorderColor #FC766AFF
+    ArrowColor #B85042
+    ArrowFontColor #234E70
+}
+
+
+title PlatformNetworkCheckService - **checkInternetConnectivity()**
+autonumber 1
+hide footbox 
+Caller -> PlatformNetworkCheckService: Invoke **checkInternetConnectivity()**
+activate Caller 
+alt (TRY)
+activate PlatformNetworkCheckService
+PlatformNetworkCheckService -> PlatformNetworkCheckService: Check InternetConnectionChecker().hasConnection 
+PlatformNetworkCheckService -> PlatformNetworkCheckService: Assign the response to variable **result**
+alt #POSITIVERESPONSE (result == true)
+PlatformNetworkCheckService -> Caller: Return ServiceResult and assign the statuscode as **Ok** and message as **"Success"** and content as **result**
+else  #NEGATIVEERESPONSE
+PlatformNetworkCheckService -> Caller: Return ServiceResult and assign the statuscode as **ServiceException** and message as **"Failed"** and content as **result**
+end
+else #NEGATIVEERESPONSE on SocketException
+    PlatformNetworkCheckService --> Caller : Return **ServiceResult** with **statusCode** as **SocketException**, **message** as **"No Internet Connection"** and **content** as **null**
+else #NEGATIVEERESPONSE on FormatException
+    PlatformNetworkCheckService --> Caller : Return **ServiceResult** with **statusCode** as **UnProcessibleEntity**, **message** as **"Format Exception"** and **content** as **null**
+else #efbbbb Catch 
+PlatformNetworkCheckService -> PlatformNetworkCheckService: Write log exceptions
+PlatformNetworkCheckService --> Caller:  Returns ServiceResult and assign the statuscode **SystemException** and message as **exception**.
+deactivate Caller
+deactivate PlatformNetworkCheckService
+end
+
+==**checkInternetConnectivity()** - PSEUDOCODE==
+hnote across
+**TRY**
+
+    CHECK internet Connection using InternetConnectionChecker().hasConnection
+
+    ASSIGN the response to variable **result** to validate the internet connection 
+
+    **(IF result == true)**
+
+        RETURN ServiceResult and assign the statuscode as **Ok** and message as **"Success"** and content as **result**
+
+    ELSE 
+
+        RETURN ServiceResult and assign the statuscode as **ServiceException** and message as **"Failed"** and content as **result**
+
+**ON FORMATEXCEPTION**
+
+    RETURNS ServiceResult and assign the  **statuscode as Forbidden** and **message as "The type of data got is incorrect!"**
+
+**ON SOCKETEXCEPTION**
+
+    RETURNS ServiceResult and assign the **statuscode as NetworkFailure** and **message as "There is not internet connection!"** and **content as empty**
+    
+**CATCH**
+
+    RETURNS ServiceResult and assign the statuscode **SystemException** and message as **exception**
+
+endnote

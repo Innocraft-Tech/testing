@@ -1,0 +1,31 @@
+@startuml Popup-Class-Diagram
+package Pages{
+    package ReusableViews{
+        package Popup{
+            class Popup{
+                + showPopup(BuildContext context, PopupBO event, GlobalKey alertKey) : Future<void>
+            }
+        }
+    }
+}
+ 
+newpage 
+
+package Pages{
+    package ReusableViews{
+        package Popup{
+            class Popup{
+                + showPopup(BuildContext context, PopupBO event, GlobalKey alertKey) : Future<void>
+            }
+        }
+    }
+  package HomeScreen{
+    class HomeScreenView{
+     
+    }
+  }
+}
+
+ Pages.ReusableViews.Popup.Popup <-- Pages.HomeScreen.HomeScreenView
+
+@enduml

@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "693416326316",
+    "firebase_url": "https://zappy-a2e25-default-rtdb.firebaseio.com",
+    "project_id": "zappy-a2e25",
+    "storage_bucket": "zappy-a2e25.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693416326316:android:12bde6cfeaed0db192db09",
+        "android_client_info": {
+          "package_name": "com.example.zappy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_U81yadMW48KVTEowGXcc75Jj6jz_1-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693416326316:android:8d12fa1c10a02f4e92db09",
+        "android_client_info": {
+          "package_name": "com.example.zappyriders"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_U81yadMW48KVTEowGXcc75Jj6jz_1-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

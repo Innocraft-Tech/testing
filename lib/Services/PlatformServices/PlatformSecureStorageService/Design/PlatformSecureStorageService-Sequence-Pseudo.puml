@@ -1,0 +1,137 @@
+
+@startuml PlatformSecureStorageService-Sequence-Pseudo-Diagram
+skinparam sequence{
+    ParticipantBackgroundColor #A7BEAE
+    LifeLineBackgroundColor #E7E8D1
+    LifeLineBorderColor #2C5F2D
+    ActorBackgroundColor #FC766AFF
+    ActorBorderColor #FC766AFF
+    ArrowColor #B85042
+    ArrowFontColor #234E70
+}
+
+title **saveData<String>({required String key, required String value})**
+autonumber 1
+hide footbox
+Caller -> PlatformSecureStorageService: Invoke **saveData<String>({required String key, required String value})**
+activate Caller
+activate PlatformSecureStorageService
+alt#6883BC #FCF6F5 TRY
+    PlatformSecureStorageService -> PlatformSecureStorageService: Invoke  FlutterSecureStorage().write(key:key,value:value) 
+    PlatformSecureStorageService --> Caller: Returns ServiceResult with statusCode as **"OK"** and content as **true** and message as **"Success"**
+else #efbbbb CATCH
+    PlatformSecureStorageService -> PlatformSecureStorageService: Write log exceptions
+    PlatformSecureStorageService --> Caller:  Returns ServiceResult with statusCode as **"ServiceException"** and content as **false** and message as **exception**
+    deactivate PlatformSecureStorageService
+    deactivate Caller
+end
+
+==saveData<String>({required String key, required String value}) - PSEUDOCODE==
+hnote across
+
+**TRY**
+
+    SAVE the data by calling FlutterSecureStorage().write(key:key,value:value) and pass the 'key' and 'value' to the named parameters **key** and **value**
+
+    RETURN ServiceResult with statusCode as **"OK"** and content as **true** and message as **"Success"**
+
+**CATCH**
+
+    RETURN ServiceResult with statusCode as **"ServiceException"** and content as **false** and message as **exception**
+
+end note
+
+newpage **retrieveData<T>({required String key})**
+autonumber 1
+hide footbox
+Caller -> PlatformSecureStorageService: Invoke **retrieveData<T>({required String key})**
+activate Caller
+activate PlatformSecureStorageService
+alt#6883BC #FCF6F5 TRY
+    PlatformSecureStorageService -> PlatformSecureStorageService: Invoke  FlutterSecureStorage().read(key:key) and store in a variable **retrievedData**
+    PlatformSecureStorageService --> Caller:Return the ServiceResult with statusCode as **"OK"** and content as **retrievedData** and message as **"Success"**
+else #efbbbb CATCH
+    PlatformSecureStorageService -> PlatformSecureStorageService: Write log exceptions
+    PlatformSecureStorageService --> Caller: Return the ServiceResult with statusCode as **"NoContent"** and content as **null** and message as **exception**
+    deactivate PlatformSecureStorageService
+    deactivate Caller
+end
+
+==retrieveData<T>({required String key}) - PSEUDOCODE==
+hnote across
+
+**TRY**
+
+    RETRIEVE the data by calling **FlutterSecureStorage().read(key:key)** and pass the 'key' to the named parameter **key** and store in a variable **retrievedData**
+
+    RETURN the ServiceResult with statusCode as **"OK"** and content as **retrievedData** and message as **"Success"**
+
+**CATCH**
+
+    RETURN ServiceResult with statusCode as **"NoContent"** and content as **null** and message as **exception**
+
+end note
+
+newpage **deleteData({required String key})**
+autonumber 1
+hide footbox
+Caller -> PlatformSecureStorageService: Invoke **deleteData({required String key})**
+activate Caller
+activate PlatformSecureStorageService
+alt#6883BC #FCF6F5 TRY
+    PlatformSecureStorageService -> PlatformSecureStorageService: Invoke  FlutterSecureStorage().delete(key:key)
+    PlatformSecureStorageService --> Caller:Returns the ServiceResult with statusCode as **"OK"** and content as **true** and message as **"Success"**
+else #efbbbb CATCH
+    PlatformSecureStorageService -> PlatformSecureStorageService: Write log exceptions
+    PlatformSecureStorageService --> Caller: Return ServiceResult with statusCode as **"ServiceException"** and content as **false** and message as **"Exception"**
+    deactivate PlatformSecureStorageService
+    deactivate Caller
+end
+
+==deleteData({required String key}) - PSEUDOCODE==
+hnote across
+
+**TRY**
+
+    DELETE the data by passing key to **delete(key:key)**
+
+    RETURN the ServiceResult with statusCode as **"OK"** and content as **true** and message as **"Success"**
+
+**CATCH**
+
+    RETURN ServiceResult with statusCode as **"ServiceException"** and content as **false** and message as **"Exception"**
+
+end note
+
+newpage **deleteAllData()**
+autonumber 1
+hide footbox
+Caller -> PlatformSecureStorageService: Invoke **deleteAllData()**
+activate Caller
+activate PlatformSecureStorageService
+alt#6883BC #FCF6F5 TRY
+    PlatformSecureStorageService -> PlatformSecureStorageService: Invoke **FlutterSecureStorage().deleteAll()**
+    PlatformSecureStorageService --> Caller:Returns the ServiceResult with statusCode as **"OK"** and content as **true** and message as **"Success"**
+else #efbbbb CATCH
+    PlatformSecureStorageService -> PlatformSecureStorageService: Write log exceptions
+    PlatformSecureStorageService --> Caller: Return ServiceResult with statusCode as **"ServiceException"** and content as **false** and message as **"Exception"**
+    deactivate PlatformSecureStorageService
+    deactivate Caller
+end
+
+==deleteAllData() - PSEUDOCODE==
+hnote across
+
+**TRY**
+
+    DELETE all the data by calling **deleteAll()**
+
+    RETURN the ServiceResult with statusCode as **"OK"** and content as **true** and message as **"Success"**
+
+**CATCH**
+
+    RETURN ServiceResult with statusCode as **"ServiceException"** and content as **false** and message as **"Exception"**
+
+end note
+
+@enduml

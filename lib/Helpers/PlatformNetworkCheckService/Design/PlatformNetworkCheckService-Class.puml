@@ -1,0 +1,87 @@
+@startuml Platform NetworkCheck Service - class diagram 
+package Services{
+    package PlatformNetworkCheckService{
+        interface IPlatformNetworkCheckService{
+            + checkInternetConnectivity(): Future<ServiceResult<bool>>
+           
+        }
+    }
+}
+
+newpage 
+title checkInternetConnectivity()
+package Pages{
+    package DashboardScreen{
+        class DashboardScreenVM{
+                + filterSearchResults(required String queryValue) : Future<void>
+                + invokeDeleteProject(required String projectId) : Future<void>  
+                + invokeCreateProject(required RequestProjectBO projectDetails) : Future<void>
+                + invokeUpdate(required VersionBO version) : Future<void>
+                + fetchUserDetails() : Future<void>
+                + fetchUserProfilePic() : Future<void>
+                + checkVersionUpdate(required bool isVerifiedStatus) : Future<VersionBO?>
+        }
+    }
+
+}
+
+package Services{
+    package PlatformNetworkCheckService{
+        interface IPlatformNetworkCheckService{
+            + checkInternetConnectivity(): Future<ServiceResult<bool>>
+           
+        }
+    }
+}
+
+IPlatformNetworkCheckService <-- DashboardScreenVM
+
+newpage 
+title checkInternetConnectivity()
+
+package Services{
+    package PlatformNetworkCheckService{
+        interface IPlatformNetworkCheckService{
+            + checkInternetConnectivity(): Future<ServiceResult<bool>>
+           
+        }
+    }
+}
+
+package Pages{
+    package LoginScreen{
+        Class LoginScreenVM {
+            + requestMicrosoftAccessToken(required String authorizationCode): Future<String?>
+            + requestAppifyAccessToken(): Future<String?>
+            + requestUser(): Future<UserBO?>
+            + checkVersionUpdate(required bool isVerifiedStatus) : Future<VersionBO?>
+        
+        }
+    }
+}
+IPlatformNetworkCheckService <-- LoginScreenVM
+
+
+
+
+newpage
+package Services{
+    package PlatformNetworkCheckService{
+        interface IPlatformNetworkCheckService{
+            + checkInternetConnectivity(): Future<ServiceResult<bool>>
+           
+        }
+    }
+}
+
+package Pages{
+    package InternetConnectivityScreen{
+        Class InternetConnectivityScreenVM {
+            + tryAgain(): Future<void>
+        
+        }
+    }
+}
+IPlatformNetworkCheckService <-- InternetConnectivityScreenVM
+@enduml
+

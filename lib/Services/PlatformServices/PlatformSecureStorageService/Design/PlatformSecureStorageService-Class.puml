@@ -1,0 +1,14 @@
+@startuml
+package Services{
+    package PlatformServices{
+        package PlatformSecureStorageService {
+            interface IPlatformSecureStorageService{
+                + retrieveData({required String key}) : Future<ServiceResult<T>>
+                + saveData({required String key, required T value}) : Future<ServiceResult<bool>>
+                + deleteData({required String key}) : Future<ServiceResult<bool>>
+                + deleteAllData() : Future<ServiceResult<bool>>
+            }
+        }
+    }
+}
+@enduml
