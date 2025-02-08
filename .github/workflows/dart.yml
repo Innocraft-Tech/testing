@@ -27,6 +27,14 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Set iOS Deployment Target
+        run: |
+          sed -i '' 's/platform :ios, .*/platform :ios, "13.0"/' ios/Podfile
+
+      - name: Remove existing Pods and Lockfile
+        run: |
+          rm -rf ios/Pods ios/Podfile.lock
+
       - name: Update CocoaPods repo
         run: pod repo update
         working-directory: ios
