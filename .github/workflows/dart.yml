@@ -27,20 +27,23 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Set iOS Deployment Target
+      - name: Ensure iOS Deployment Target is 13.0
         run: |
           sed -i '' 's/platform :ios, .*/platform :ios, "13.0"/' ios/Podfile
+          cat ios/Podfile  # Print to verify change
 
       - name: Remove existing Pods and Lockfile
         run: |
-          rm -rf ios/Pods ios/Podfile.lock
+          rm -rf ios/Pods ios/Podfile.lock ~/Library/Developer/Xcode/DerivedData
 
-      - name: Update CocoaPods repo
-        run: pod repo update
+      - name: Deintegrate CocoaPods
+        run: pod deintegrate
         working-directory: ios
 
-      - name: Install CocoaPods dependencies
-        run: pod install --verbose
+      - name: Update CocoaPods and Install Dependencies
+        run: |
+          pod repo update
+          pod install --verbose
         working-directory: ios
 
       - name: Build iOS app (without codesign)
@@ -63,6 +66,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/ios/iphoneos/FlutterIpaExport.ipa
-          tag: ${{ github.ref_name }}  # Uses branch/tag name dynamically
+          tag: ${{ github.ref_name }}
           overwrite: true
           body: "Automated iOS build release 🚀"
