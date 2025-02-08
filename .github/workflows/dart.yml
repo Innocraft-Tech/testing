@@ -28,16 +28,13 @@ jobs:
       - name: Install CocoaPods
         run: sudo gem install cocoapods
 
-      - name: Clean iOS Build Artifacts
+      - name: Clean CocoaPods & Reset Cache
         run: |
           cd ios
           rm -rf Pods Podfile.lock
           pod deintegrate
           pod cache clean --all
-
-      - name: Update CocoaPods Repo
-        run: pod repo update
-        working-directory: ios
+          pod repo update
 
       - name: Install Pod Dependencies
         run: pod install --verbose
@@ -53,7 +50,6 @@ jobs:
 
       - name: Create IPA File
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
-        working-directory: build/ios/iphoneos
 
       - name: Upload IPA to GitHub Release
         uses: svenstaro/upload-release-action@v2
