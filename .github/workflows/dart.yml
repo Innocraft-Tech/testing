@@ -7,6 +7,7 @@ jobs:
   build-ios:
     name: 🎉 iOS Build
     runs-on: macos-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -16,12 +17,23 @@ jobs:
         with:
           channel: 'stable'
           architecture: x64
+          cache: true
+
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      - name: Set iOS Deployment Target (Fix Firebase Issue)
+        run: sed -i '' 's/platform :ios, .*/platform :ios, "13.0"/' ios/Podfile
 
       - name: Install CocoaPods
         run: sudo gem install cocoapods
 
-      - name: Install Flutter Dependencies
-        run: flutter pub get
+      - name: Clean iOS Build Artifacts
+        run: |
+          cd ios
+          rm -rf Pods Podfile.lock
+          pod deintegrate
+          pod cache clean --all
 
       - name: Update CocoaPods Repo
         run: pod repo update
@@ -36,9 +48,8 @@ jobs:
 
       - name: Prepare IPA Packaging
         run: |
-          mkdir Payload
-          mv Runner.app Payload/
-        working-directory: build/ios/iphoneos
+          mkdir -p Payload
+          mv build/ios/iphoneos/Runner.app Payload/
 
       - name: Create IPA File
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
@@ -48,7 +59,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/ios/iphoneos/FlutterIpaExport.ipa
+          file: FlutterIpaExport.ipa
           tag: v1.0
           overwrite: true
           body: "This is the first release"
